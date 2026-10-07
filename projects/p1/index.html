@@ -393,7 +393,8 @@
 
 
         <p>
-            Autonomous service robotics project
+            Irene Diez de Toro
+            October 2026 - Robotic Software Engineering
         </p>
 
     </header>
@@ -412,7 +413,7 @@
         <section class="section">
 
             <h2>
-                01 — Introduction
+                0 — Introduction
             </h2>
 
 
@@ -424,10 +425,11 @@
 
 
             <p>
-                The objective is to create a robot capable
-                of navigating autonomously through an
-                environment while determining its own
-                position.
+                For the initial practical assignment of this course, we are required to implement a BSA (Backtracking Spiral Algorithm) 
+                for a vacuum-cleaning robot that uses self-localization. To accomplish this, we are provided with a pixel-based map representing 
+                the obstacles within a house, and the objective is to cover as much of the available area as possible in order to achieve an efficient 
+                and thorough cleaning of the entire surface. In addition, the corresponding theoretical background and guidelines for implementing the 
+                algorithm are provided.
             </p>
 
         </section>
@@ -439,14 +441,15 @@
         <section class="section">
 
             <h2>
-                02 — Project Overview
+                01 — Theorical Concepts
             </h2>
 
 
             <p>
                 The system combines localization,
                 navigation, perception and motion control
-                to allow the robot to operate autonomously.
+                to allow the robot to operate autonomously. To create the algorithm solution 
+                we needed the next theorical concepts:
             </p>
 
 
@@ -460,12 +463,17 @@
                     </span>
 
                     <h3>
-                        Localization
+                        Conversion between different representations:
                     </h3>
 
                     <p>
-                        Determining the robot's position
-                        inside the environment.
+                        The conversion between different types of variables is essential in this practical assignment,
+                        as the algorithm is fundamentally based on it. It is necessary to understand the conversion between 3D and 2D,
+                        or, more specifically, the conversion of the robot’s real-world coordinates in Gazebo 
+                        into specific pixels on the provided map, and vice versa. In this process, we must take into account the
+                        transformations applied to these points and use a common transformation that accurately calibrates these conversions. 
+                        Additionally, it is necessary to establish a relationship or conversion between pixels and cells, since the map must 
+                        also be divided into a grid of cells.
                     </p>
 
                 </div>
@@ -479,12 +487,13 @@
                     </span>
 
                     <h3>
-                        Navigation
+                        Coverage and decomposition, and traveling between segments:
                     </h3>
 
                     <p>
-                        Planning and executing paths
-                        through the environment.
+                        On the other hand, when developing the algorithm, we need to determine the different possible paths and decide
+                        which one to follow based on the specific requirements of the algorithm. In order to move the robot, the recommended 
+                        approach is to look two cells ahead, assuming that there are no obstacles between the robot and that position.
                     </p>
 
                 </div>
@@ -498,12 +507,16 @@
                     </span>
 
                     <h3>
-                        Control
+                        Visibility error:
                     </h3>
 
                     <p>
-                        Controlling the robot's movement
-                        and behaviour.
+                        Due to the risk of the robot colliding with obstacles when moving too close to them, it is necessary to take
+                        additional safety measures during path planning. One of the most effective solutions is to apply an erosion process 
+                        to the map, increasing the size of the obstacles virtually. This creates a safety margin around the obstacles and prevents 
+                        the robot from planning paths that would bring it too close to them. In this way, the algorithm can generate safer and more
+                        reliable trajectories, reducing the possibility of collisions while still allowing the robot to cover as much of the available 
+                        area as possible.
                     </p>
 
                 </div>
@@ -520,7 +533,7 @@
         <section class="section">
 
             <h2>
-                03 — Localization
+                03 — My Algorithm 
             </h2>
 
 
@@ -549,7 +562,7 @@
         <section class="section">
 
             <h2>
-                04 — Navigation
+                04 — Process
             </h2>
 
 
@@ -568,7 +581,7 @@
         <section class="section">
 
             <h2>
-                05 — Results
+                05 — Dificulties
             </h2>
 
 
@@ -578,6 +591,21 @@
             </p>
 
         </section>
+
+        <section class="section">
+
+            <h2>
+                06 — Video of the algorithm
+            </h2>
+
+
+            <p>
+                Experimental results, videos, images
+                and measurements will be added here.
+            </p>
+
+        </section>
+
 
 
 
