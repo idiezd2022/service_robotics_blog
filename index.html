@@ -127,22 +127,29 @@
         }
     }
 
+   .title-row {
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       gap: 20px;
+   }
+   
    .scroll-arrow {
-      text-align: center;
-      font-size: 50px;
-      color: #2563eb;
-      margin-top: 20px;
-      animation: bounce 1.5s infinite;
-      }
-      
-      @keyframes bounce {
-      0%, 100% {
-      transform: translateY(0);
-      }
-      
-      50% {
-          transform: translateY(10px);
-      }
+       font-size: 45px;
+       color: #2563eb;
+       animation: bounce 1.5s infinite;
+   }
+   
+   @keyframes bounce {
+       0%, 100% {
+           transform: translateY(0);
+       }
+   
+       50% {
+           transform: translateY(10px);
+       }
+   }
+
 
 
 }
@@ -152,8 +159,8 @@
 <header>
     <img src="encabezado.jpg" alt="Service Robotics">
    
-    <div class="scroll-arrow"> ↓ </div>
     <h1>🤖 Service Robotics Blog</h1>
+    <div class="scroll-arrow"> ↓ </div>
    
 
     <p>Projects, documentation and experiments in service robotics</p>
