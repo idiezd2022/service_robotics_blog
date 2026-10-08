@@ -302,7 +302,29 @@
         
                 color: #4b5563;
             }
+        /*SECCION A LA IZQUIERDA*/
 
+        .section-with-image {
+                display: flex;
+                align-items: flex-start;
+                gap: 40px;
+            }
+            
+            .section-text {
+                flex: 1;
+            }
+            
+            .section-image {
+                width: 35%;
+            }
+            
+            .section-image img {
+                width: 100%;
+                height: auto;
+                border-radius: 12px;
+                border: 2px solid #e5e7eb;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            }
 
         /* =========================
            PROJECT IMAGES
@@ -647,8 +669,9 @@
 
         <!-- LOCALIZATION -->
 
-        <section class="section">
+        <section class="section section-with-image">
 
+            <div class="section-text">
             <h2>
                 03. My Algorithm 
             </h2>
@@ -763,12 +786,19 @@
                     is large, the robot rotates in place. Once the robot is sufficiently aligned with the
                     target, it moves forward towards the target cell.
                 </p>
+            </div>
 
+            <div class="section-image">
                 <img
+                    src="images/bsa.png"
+                    alt="MYBSA">
+            </div>
+
+               <!-- <img
                     src="images/bsa.png"
                     class="project-image"
                     alt="MYBSA">
-            </section>
+            </section>--->
                         
             
 
