@@ -652,7 +652,9 @@
                 The program implements a map-based coverage algorithm for a vacuum-cleaning robot. It uses a grid representation of the environment and a 
                 Backtracking Spiral Algorithm (BSA) to generate a path that covers the accessible cells of the map. Once the path has been generated, the robot follows it using 
                 its linear and angular velocity controls.
+            </p>
 
+            <p>
                 1. Map processing
 
                 The map is first loaded and converted into a grayscale image. I have to manually expand left wall (I will explain it in the problems section). Then, I eroded the map by
@@ -666,7 +668,8 @@
                 For next, I divided the map into a grid of 35 × 35 pixel cells (because is the vacuum size, said in the theory page of the practice). For each cell, the percentage of 
                 obstacle pixels is calculated. If at least 1% of the cell contains obstacles, the whole cell is considered occupied. This discretization simplifies the planning 
                 process because the BSA operates on grid cells instead of individual pixels.
-                
+            </p>
+            <p>
                 2. Coordinate transformation
                 
                 The program uses five corresponding points between Gazebo coordinates and pixel coordinates. These points are used to calculate a transformation matrix using a 
@@ -676,12 +679,16 @@
                 PX_TO_GZ_T: converts pixel coordinates into Gazebo coordinates.
 
                 The gz_to_cell() function converts a Gazebo position into a grid cell, while cell_to_gz() performs the inverse operation.
+            </p>
+            <p>
 
                 3. Cell evaluation and visualization
                 
                 The is_cell_free() function determines whether a cell can be traversed (it checks that the vealue of the cell is zero or no).
                 
                 The color_cell() function is used to paint one cell in the map, by giving the row, the column and the color.
+            </p>
+            <p>
                 
                 4. Backtracking Spiral Algorithm
                 
@@ -700,7 +707,9 @@
                 stored as return points. When the robot reaches a cell with no available unvisited neighbors, the algorithm performs backtracking. It returns through 
                 previously explored cells until it reaches a stored return point, and then continues the exploration from there. This allows the algorithm to cover different 
                 branches of the environment while avoiding already visited cells.
-
+            </p>
+            <p>
+        
 
                 5. Vacuum navigation
                 
@@ -737,13 +746,16 @@
             <p>
                 In this section, I will explain the problems I encountered during the development of this practice, as well as some issues that I was not able to completely solve.
 
+            </p>
+            <p>
                 - The first problem was the calibration of the transformation matrix and the coordinate transformations.
                 It took me a lot of time to understand what I was supposed to do based on the theory. Once I understood that I had to 
                 calculate the transformation matrix myself using manually measured points, I also found the implementation quite difficult. 
                 After implementing it and making further progress with the code, I noticed another problem: when I started the navigation, the map showed the robot
                 in different cells from where it was actually located. As a solution, I had to manually add two values to the rows and columns so that the measurements were 
                 correctly calibrated. These adjustments can be seen directly in the code.
-
+            </p>
+            <p>
                 - The second problem was the color-coding system. While developing the algorithm, I did not fully understand how the different colors had to 
                 be associated with each type of cell. After making several changes, I was able to clarify how the system worked, although there are still some cells that remain uncolored.
                 <img>
@@ -751,6 +763,8 @@
                     class="project-image"
                     alt="Color">
                 </img>
+            </p>
+            <p>
 
                 - The third problem was the left wall of the map and the shelf at the bottom. Once I had the algorithm working and the robot was navigating, 
                 when it reached these two areas, the robot tried to move towards a region outside the map, as shown in the image. Therefore, I had to manually extend the
@@ -762,6 +776,8 @@
                     class="project-image"
                     alt="OtherMap">
                 </img>
+            </p>
+            <p>
 
 
                 - Finally, there are two areas of the map, which can be seen in the video, where the robot gets slightly stuck. 
