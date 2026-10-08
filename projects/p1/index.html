@@ -302,29 +302,6 @@
         
                 color: #4b5563;
             }
-        /*SECCION A LA IZQUIERDA*/
-
-        .section-with-image {
-                display: flex;
-                align-items: flex-start;
-                gap: 40px;
-            }
-            
-            .section-text {
-                flex: 1;
-            }
-            
-            .section-image {
-                width: 35%;
-            }
-            
-            .section-image img {
-                width: 100%;
-                height: auto;
-                border-radius: 12px;
-                border: 2px solid #e5e7eb;
-                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-            }
 
         /* =========================
            PROJECT IMAGES
@@ -669,9 +646,8 @@
 
         <!-- LOCALIZATION -->
 
-        <section class="section section-with-image">
+        <section class="section">
 
-            <div class="section-text">
             <h2>
                 03. My Algorithm 
             </h2>
@@ -692,8 +668,8 @@
                     The map is then eroded using the following lines of code:
                 </p>
             
-                <pre><code>kernel = np.ones((5,5), np.uint8)
-            house_map = cv2.erode(house_map, kernel, iterations=1)</code></pre>
+                <pre><code>kernel = np.ones((5,5), np.uint8)</code></pre>
+                <pre><code>house_map = cv2.erode(house_map, kernel, iterations=1)</code></pre>
             
                 <p>
                     Erosion increases the size of the obstacles and therefore provides a safety margin
@@ -786,19 +762,10 @@
                     is large, the robot rotates in place. Once the robot is sufficiently aligned with the
                     target, it moves forward towards the target cell.
                 </p>
-            </div>
-
-            <div class="section-image">
-                <img
-                    src="images/bsa.png"
-                    alt="MYBSA">
-            </div>
-
-               <!-- <img
+                   <img
                     src="images/bsa.png"
                     class="project-image"
                     alt="MYBSA">
-            </section>--->
                         
             
 
@@ -885,10 +852,10 @@
 
             </p>
 
-             <img
+             <!-- <img
                     src="images/planification.png"
                     class="project-image small-image"
-                    alt="planification">
+                    alt="planification">--->
 
              <a
                 href="https://urjc-my.sharepoint.com/:v:/r/personal/i_diezd_2022_alumnos_urjc_es/_layouts/15/stream.aspx?id=%2Fpersonal%2Fi_diezd_2022_alumnos_urjc_es%2FDocuments%2Fbsa_algrithm.mp4&share=cQr2zEs6ex_ZRIK0mtKa2OBTEgUCLeGkurlvsmCDIw1obqVFxg&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D"
@@ -927,13 +894,13 @@
             Service Robotics Blog · P1
         </p>
 
-        <div class="back">
+        <!--<div class="back">
 
             <a href="../../">
                 ← Back to Service Robotics Blog
             </a>
 
-        </div>
+        </div>--->
 
     </footer>
 
