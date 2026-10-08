@@ -531,7 +531,7 @@
         <section class="section">
 
             <h2>
-                0.Introduction
+                Introduction
             </h2>
 
 
@@ -552,7 +552,7 @@
         <section class="section">
 
             <h2>
-                01.Theorical Concepts
+                01. Theorical Concepts
             </h2>
 
 
@@ -644,14 +644,71 @@
         <section class="section">
 
             <h2>
-                03.My Algorithm 
+                03. My Algorithm 
             </h2>
 
 
             <p>
-                The localization system allows the robot
-                to estimate its position and orientation
-                within the environment.
+                The program implements a map-based coverage algorithm for a vacuum-cleaning robot. It uses a grid representation of the environment and a 
+                Backtracking Spiral Algorithm (BSA) to generate a path that covers the accessible cells of the map. Once the path has been generated, the robot follows it using 
+                its linear and angular velocity controls.
+
+                1. Map processing
+
+                The map is first loaded and converted into a grayscale image. I have to manually expand left wall (I will explain it in the problems section). Then, I eroded the map by
+                the next lines:
+
+                kernel = np.ones((5,5), np.uint8)
+                house_map = cv2.erode(house_map, kernel, iterations=1)
+                
+                Erosion increases the size of obstacles and therefore provides a safety margin between the robot and the walls.
+
+                For next, I divided the map into a grid of 35 × 35 pixel cells (because is the vacuum size, said in the theory page of the practice). For each cell, the percentage of 
+                obstacle pixels is calculated. If at least 1% of the cell contains obstacles, the whole cell is considered occupied. This discretization simplifies the planning 
+                process because the BSA operates on grid cells instead of individual pixels.
+                
+                2. Coordinate transformation
+                
+                The program uses five corresponding points between Gazebo coordinates and pixel coordinates. These points are used to calculate a transformation matrix using a 
+                least-squares method. Two transformations are obtained:
+
+                GZ_TO_PX_T: converts Gazebo coordinates into pixel coordinates.
+                PX_TO_GZ_T: converts pixel coordinates into Gazebo coordinates.
+
+                The gz_to_cell() function converts a Gazebo position into a grid cell, while cell_to_gz() performs the inverse operation.
+
+                3. Cell evaluation and visualization
+                
+                The is_cell_free() function determines whether a cell can be traversed (it checks that the vealue of the cell is zero or no).
+                
+                The color_cell() function is used to paint one cell in the map, by giving the row, the column and the color.
+                
+                4. Backtracking Spiral Algorithm
+                
+                The planning algorithm is implemented in the bsa() function. The algorithm maintains several data structures:
+                
+                visited: stores the cells that have already been explored.
+                path: stores the final sequence of cells that the robot should follow.
+                all_map_cells: acts as a stack for the current exploration.
+                return_points: stores alternative branches that can be explored later.
+                
+                The robot explores the map using four possible directions:
+                
+                directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+
+                The algorithm first moves to an unvisited free neighboring cell. When several possible neighbors are available, the additional alternatives are
+                stored as return points. When the robot reaches a cell with no available unvisited neighbors, the algorithm performs backtracking. It returns through 
+                previously explored cells until it reaches a stored return point, and then continues the exploration from there. This allows the algorithm to cover different 
+                branches of the environment while avoiding already visited cells.
+
+
+                5. Vacuum navigation
+                
+                Once the path has been generated, the vacuum starts following it. For each target cell, its corresponding Gazebo coordinates are 
+                calculated.I use the Euclidean distance between the robot and the target to know when vacuum reaches the target. When the robot is closer than 0.20 meters to the target,
+                the program considers the cell reached and moves to the next target. Otherwise, the program calculates the angle between the robot and the target. If the angular 
+                error is large, the robot rotates in place. Once the robot is sufficiently aligned with the target, it moves forward.
+                
             </p>
 
 
@@ -673,7 +730,7 @@
         <section class="section">
 
             <h2>
-                04.Process
+                04. Dificulties
             </h2>
 
 
@@ -685,28 +742,10 @@
 
         </section>
 
-
-
-        <!-- RESULTS -->
-
         <section class="section">
 
             <h2>
-                05.Dificulties
-            </h2>
-
-
-            <p>
-                Experimental results, videos, images
-                and measurements will be added here.
-            </p>
-
-        </section>
-
-        <section class="section">
-
-            <h2>
-                06.Video of the algorithm
+                05. Video of the algorithm
             </h2>
 
 
