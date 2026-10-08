@@ -730,14 +730,46 @@
         <section class="section">
 
             <h2>
-                04. Dificulties
+                04. Dificulties or Problems Encountered During Development
             </h2>
 
 
             <p>
-                The navigation system is responsible
-                for calculating safe and efficient paths
-                for the robot.
+                In this section, I will explain the problems I encountered during the development of this practice, as well as some issues that I was not able to completely solve.
+
+                - The first problem was the calibration of the transformation matrix and the coordinate transformations.
+                It took me a lot of time to understand what I was supposed to do based on the theory. Once I understood that I had to 
+                calculate the transformation matrix myself using manually measured points, I also found the implementation quite difficult. 
+                After implementing it and making further progress with the code, I noticed another problem: when I started the navigation, the map showed the robot
+                in different cells from where it was actually located. As a solution, I had to manually add two values to the rows and columns so that the measurements were 
+                correctly calibrated. These adjustments can be seen directly in the code.
+
+                - The second problem was the color-coding system. While developing the algorithm, I did not fully understand how the different colors had to 
+                be associated with each type of cell. After making several changes, I was able to clarify how the system worked, although there are still some cells that remain uncolored.
+                <img>
+                    src="images/problem1.png"
+                    class="project-image"
+                    alt="Color">
+                </img>
+
+                - The third problem was the left wall of the map and the shelf at the bottom. Once I had the algorithm working and the robot was navigating, 
+                when it reached these two areas, the robot tried to move towards a region outside the map, as shown in the image. Therefore, I had to manually extend the
+                walls slightly so that the robot could complete the path correctly. Although we were provided with a new map because the one from Unibotics was misaligned,
+                I preferred to use this one for convenience.
+
+                <img>
+                    src="images/other_map.png"
+                    class="project-image"
+                    alt="OtherMap">
+                </img>
+
+
+                - Finally, there are two areas of the map, which can be seen in the video, where the robot gets slightly stuck. 
+                The first one is in a corner on the right side of the map. After a few minutes, the robot is able to get unstuck by itself. 
+                However, in the entrance to the room on the left, the robot is unable to get out by itself, so I have to move it manually a little. Before recording the 
+                video, however, the robot was also able to get unstuck from this area by itself.
+
+
             </p>
 
         </section>
