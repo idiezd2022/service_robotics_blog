@@ -388,6 +388,26 @@
             background: #1d4ed8;
         }
 
+        .side-image {
+            position: fixed;
+            width: 120px;
+            height: auto;
+            z-index: 0;
+            opacity: 0.8;
+        }
+        
+        .side-left {
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .side-right {
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
 
         /* =========================
            FOOTER
@@ -460,6 +480,8 @@
     <!-- =========================
          NAVIGATION BAR
          ========================= -->
+    <img src="images/side_image.png" class="side-image side-left" alt="">
+    <img src="images/side_image.png" class="side-image side-right" alt="">
 
     <nav class="navbar">
 
