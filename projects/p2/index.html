@@ -7,7 +7,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>P2 — Coming Soon</title>
+    <title>P2 — Rescue People</title>
 
 
     <style>
@@ -303,7 +303,6 @@
                 color: #4b5563;
             }
 
-
         /* =========================
            PROJECT IMAGES
            ========================= */
@@ -321,6 +320,39 @@
 
             box-shadow:
                 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .small-image {
+            width: 70%;
+            display: block;
+            margin: 25px auto 0;
+        }
+
+        .video-link {
+            /*display: inline-block;
+            
+            margin-top: 10px;*/
+             display: block;
+            width: fit-content;
+            margin: 10px 0 0 auto;
+            
+            padding: 12px 20px;
+            
+            background: #2563eb;
+            
+            color: white;
+            
+            text-decoration: none;
+            
+            border-radius: 7px;
+            
+            transition: 0.2s;
+        }
+
+       
+        
+        .video-link:hover {
+            background: #1d4ed8;
         }
 
 
@@ -354,6 +386,27 @@
 
         .back a:hover {
             background: #1d4ed8;
+        }
+
+        .side-image {
+            position: fixed;
+            width: 200px;
+            height: auto;
+            z-index: 0;
+            opacity: 0.8;
+            border-radius: 20px;
+        }
+        
+        .side-left {
+            left: 40px;
+            top: 50%;
+            transform: translateY(-50%) scaleX(-1);
+        }
+        
+        .side-right {
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
 
@@ -428,6 +481,8 @@
     <!-- =========================
          NAVIGATION BAR
          ========================= -->
+    <img src="images/side_image.png" class="side-image side-left" alt="">
+    <img src="images/side_image.png" class="side-image side-right" alt="">
 
     <nav class="navbar">
 
@@ -442,7 +497,7 @@
                 Home
             </a>
 
-            <a href="../p1/">
+            <a href="../p1/" >
                 P1
             </a>
 
@@ -481,17 +536,379 @@
 
 
         <h1>
-            Coming Soon
+            Rescue People Drone
         </h1>
 
 
         <p>
             Irene Diez de Toro
-            2026 - Robotic Software Engineering
+        </p>
+        
+        <p>
+            October 2026 - Robotic Software Engineering
         </p>
 
     </header>
 
+
+
+    <!-- =========================
+         MAIN CONTENT
+         ========================= -->
+
+    <main class="content">
+
+
+        <!-- INTRODUCTION -->
+
+        <section class="section">
+
+            <h2>
+                Introduction
+            </h2>
+
+
+            <p>
+                For the initial practical assignment of this course, we are required to implement a BSA (Backtracking Spiral Algorithm) 
+                for a vacuum-cleaning robot that uses self-localization. To accomplish this, we are provided with a pixel-based map representing 
+                the obstacles within a house, and the objective is to cover as much of the available area as possible in order to achieve an efficient 
+                and thorough cleaning of the entire surface. In addition, the corresponding theoretical background and guidelines for implementing the 
+                algorithm are provided.
+            </p>
+
+        </section>
+
+
+
+        <!-- PROJECT OVERVIEW -->
+
+        <section class="section">
+
+            <h2>
+                01. Theorical Concepts
+            </h2>
+
+
+            <p>
+                The system combines localization,
+                navigation, perception and motion control
+                to allow the robot to operate autonomously. To create the algorithm solution 
+                we needed the next theorical concepts:
+            </p>
+
+
+            <div class="info-grid">
+
+
+                <div class="info-card">
+
+                    <span>
+                        01
+                    </span>
+
+                    <h3>
+                        Conversion between different representations
+                    </h3>
+
+                    <p>
+                        The conversion between different types of variables is essential in this practical assignment,
+                        as the algorithm is fundamentally based on it. It is necessary to understand the conversion between 3D and 2D,
+                        or, more specifically, the conversion of the robot’s real-world coordinates in Gazebo 
+                        into specific pixels on the provided map, and vice versa. In this process, we must take into account the
+                        transformations applied to these points and use a common transformation that accurately calibrates these conversions. 
+                        Additionally, it is necessary to establish a relationship or conversion between pixels and cells, since the map must 
+                        also be divided into a grid of cells.
+                    </p>
+
+                </div>
+
+
+
+                <div class="info-card">
+
+                    <span>
+                        02
+                    </span>
+
+                    <h3>
+                        Coverage and decomposition, and traveling between segments
+                    </h3>
+
+                    <p>
+                        On the other hand, when developing the algorithm, we need to determine the different possible paths and decide
+                        which one to follow based on the specific requirements of the algorithm. In order to move the robot, the recommended 
+                        approach is to look two cells ahead, assuming that there are no obstacles between the robot and that position.
+                    </p>
+
+                </div>
+
+
+
+                <div class="info-card">
+
+                    <span>
+                        03
+                    </span>
+
+                    <h3>
+                        Visibility error
+                    </h3>
+
+                    <p>
+                        Due to the risk of the robot colliding with obstacles when moving too close to them, it is necessary to take
+                        additional safety measures during path planning. One of the most effective solutions is to apply an erosion process 
+                        to the map, increasing the size of the obstacles virtually. This creates a safety margin around the obstacles and prevents 
+                        the robot from planning paths that would bring it too close to them. In this way, the algorithm can generate safer and more
+                        reliable trajectories, reducing the possibility of collisions while still allowing the robot to cover as much of the available 
+                        area as possible.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- LOCALIZATION -->
+
+        <section class="section">
+
+            <h2>
+                03. My Algorithm 
+            </h2>
+            
+                <p>
+                    My program implements a map-based coverage algorithm for a vacuum-cleaning robot.
+                    It uses a grid representation of the environment and a Backtracking Spiral Algorithm (BSA)
+                    to generate a path that covers the accessible cells of the map. Once the path has been
+                    generated, the robot follows it using its linear and angular velocity controls.
+                </p>
+            
+                <p>
+                    <strong>1. Map processing</strong><br><br>
+            
+                    The map is first loaded and converted into a grayscale image. Before processing the map,
+                    I manually extended the left wall to prevent the robot from trying to move outside the
+                    mapped area. I will explain this problem in more detail in the Problems section.
+                    The map is then eroded using the following lines of code:
+                </p>
+            
+                <pre><code>kernel = np.ones((5,5), np.uint8)</code></pre>
+                <pre><code>house_map = cv2.erode(house_map, kernel, iterations=1)</code></pre>
+            
+                <p>
+                    Erosion increases the size of the obstacles and therefore provides a safety margin
+                    between the robot and the walls.
+                </p>
+            
+                <p>
+                    Next, the map is divided into a grid of 35 × 35 pixel cells, since this corresponds
+                    to the size of the vacuum cleaner according to the theoretical guidelines of the practice.
+                    For each cell, the percentage of obstacle pixels is calculated. If at least 1% of the
+                    cell contains obstacle pixels, the entire cell is considered occupied. This discretization
+                    simplifies the planning process because the BSA operates on grid cells instead of individual pixels.
+                </p>
+            
+                <p>
+                    <strong>2. Coordinate transformation</strong><br><br>
+            
+                    The program uses five corresponding points between Gazebo coordinates and pixel coordinates.
+                    These points are used to calculate a transformation matrix using a least-squares method.
+                    Two transformations are obtained:
+                </p>
+            
+                <p>
+                    <strong>GZ_TO_PX_T:</strong> converts Gazebo coordinates into pixel coordinates.<br>
+                    <strong>PX_TO_GZ_T:</strong> converts pixel coordinates into Gazebo coordinates.
+                </p>
+            
+                <p>
+                    The <code>gz_to_cell()</code> function converts the robot's position in Gazebo into
+                    the corresponding grid cell, while <code>cell_to_gz()</code> performs the inverse operation,
+                    converting a grid cell into Gazebo coordinates.
+                </p>
+            
+                <p>
+                    <strong>3. Cell evaluation and visualization</strong><br><br>
+            
+                    The <code>is_cell_free()</code> function determines whether a cell can be traversed.
+                    It checks whether the corresponding value in the grid represents a free cell or an obstacle.
+                </p>
+            
+                <p>
+                    The <code>color_cell()</code> function is used to visualize the different types of cells
+                    on the map. It receives the row, column, and corresponding color as parameters and
+                    changes the color of the selected cell.
+                </p>
+            
+                <p>
+                    <strong>4. Backtracking Spiral Algorithm</strong><br><br>
+            
+                    The planning algorithm is implemented in the <code>bsa()</code> function. The algorithm
+                    uses several data structures to keep track of the exploration:
+                </p>
+            
+                <p>
+                    <strong>visited:</strong> stores the cells that have already been explored.<br>
+                    <strong>path:</strong> stores the final sequence of cells that the robot should follow.<br>
+                    <strong>all_map_cells:</strong> acts as a stack during the exploration process.<br>
+                    <strong>return_points:</strong> stores alternative branches that can be explored later.
+                </p>
+            
+                <p>
+                    The robot explores the map using four possible directions:
+                </p>
+            
+                <pre><code>directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]</code></pre>
+            
+                <p>
+                    The algorithm first moves to an unvisited free neighboring cell. When several possible
+                    neighbors are available, the additional alternatives are stored as return points.
+                    When the robot reaches a cell with no available unvisited neighbors, the algorithm
+                    performs a backtracking process. It returns through previously explored cells until
+                    it reaches a stored return point, and then continues the exploration from there.
+                    This allows the algorithm to cover different branches of the environment while
+                    avoiding already visited cells.
+                </p>
+            
+                <p>
+                    <strong>5. Vacuum navigation</strong><br><br>
+            
+                    Once the path has been generated, the vacuum cleaner starts following it. For each
+                    target cell, its corresponding Gazebo coordinates are calculated. I use the Euclidean
+                    distance between the robot and the target to determine when the robot has reached the
+                    target cell.
+                </p>
+            
+                <p>
+                    When the robot is closer than 0.20 meters to the target, the cell is considered reached
+                    and the program moves to the next target. Otherwise, the program calculates the angle
+                    between the robot's current orientation and the target position. If the angular error
+                    is large, the robot rotates in place. Once the robot is sufficiently aligned with the
+                    target, it moves forward towards the target cell.
+                </p>
+                   <img
+                    src="images/bsa.png"
+                    class="project-image"
+                    alt="MYBSA">
+                        
+            
+
+            <!--
+            Para añadir una imagen:
+
+            <img
+                src="images/localization.png"
+                class="project-image"
+                alt="Localization">
+            -->
+
+        </section>
+
+
+
+        <!-- NAVIGATION -->
+
+        <section class="section">
+
+            <h2>
+                04. Dificulties or Problems Encountered During Development
+            </h2>
+
+
+            <p>
+                In this section, I will explain the problems I encountered during the development of this practice, as well as some issues that I was not able to completely solve.
+
+            </p>
+            <p>
+                - The first problem was the calibration of the transformation matrix and the coordinate transformations.
+                It took me a lot of time to understand what I was supposed to do based on the theory. Once I understood that I had to 
+                calculate the transformation matrix myself using manually measured points, I also found the implementation quite difficult. 
+                After implementing it and making further progress with the code, I noticed another problem: when I started the navigation, the map showed the robot
+                in different cells from where it was actually located. As a solution, I had to manually add two values to the rows and columns so that the measurements were 
+                correctly calibrated. These adjustments can be seen directly in the code.
+            </p>
+            <p>
+                - The second problem was the color-coding system. While developing the algorithm, I did not fully understand how the different colors had to 
+                be associated with each type of cell. After making several changes, I was able to clarify how the system worked, although there are still some cells that remain uncolored.
+            </p>
+                <img
+                    src="images/problem1.png"
+                    class="project-image"
+                    alt="Color coding problem">
+            
+            <p>
+
+                - The third problem was the left wall of the map and the shelf at the bottom. Once I had the algorithm working and the robot was navigating, 
+                when it reached these two areas, the robot tried to move towards a region outside the map, as shown in the image. Therefore, I had to manually extend the
+                walls slightly so that the robot could complete the path correctly. Although we were provided with a new map because the one from Unibotics was misaligned,
+                I preferred to use this one for convenience.
+            </p>
+                <img
+                    src="images/other_map.png"
+                    class="project-image"
+                    alt="Modified map">
+            
+            <p>
+
+
+                - Finally, there are two areas of the map, which can be seen in the video, where the robot gets slightly stuck. 
+                The first one is in a corner on the right side of the map. After a few minutes, the robot is able to get unstuck by itself. 
+                However, in the entrance to the room on the left, the robot is unable to get out by itself, so I have to move it manually a little. Before recording the 
+                video, however, the robot was also able to get unstuck from this area by itself.
+            </p>
+
+
+            
+
+        </section>
+
+        <section class="section">
+
+            <h2>
+                05. Video of the algorithm
+            </h2>
+
+
+            <p>
+                Finally, this is the video of the program. It is worth noting that the video is in fast motion. 
+                Additionally, the two areas discussed in the “Problems” section have been cut a little out to reduce the length of the video, 
+                as the original video was approximately 30 minutes long.
+
+            </p>
+
+             <!-- <img
+                    src="images/planification.png"
+                    class="project-image small-image"
+                    alt="planification">--->
+
+             <a
+                href="https://urjc-my.sharepoint.com/:v:/r/personal/i_diezd_2022_alumnos_urjc_es/_layouts/15/stream.aspx?id=%2Fpersonal%2Fi_diezd_2022_alumnos_urjc_es%2FDocuments%2Fbsa_algrithm.mp4&share=cQr2zEs6ex_ZRIK0mtKa2OBTEgUCLeGkurlvsmCDIw1obqVFxg&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D"
+                class="video-link"
+                target="_blank">
+                ▶ Watch the algorithm video
+            </a>
+
+        </section>
+
+
+
+
+        <!-- BACK BUTTON -->
+
+        <div class="back">
+
+            <a href="../../">
+                ← Back to Service Robotics Blog
+            </a>
+
+        </div>
+
+
+    </main>
 
 
 
@@ -504,6 +921,14 @@
         <p>
             Service Robotics Blog · P2
         </p>
+
+        <!--<div class="back">
+
+            <a href="../../">
+                ← Back to Service Robotics Blog
+            </a>
+
+        </div>--->
 
     </footer>
 
