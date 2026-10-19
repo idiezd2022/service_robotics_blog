@@ -661,117 +661,53 @@
             </h2>
             
                 <p>
-                    My program implements a map-based coverage algorithm for a vacuum-cleaning robot.
-                    It uses a grid representation of the environment and a Backtracking Spiral Algorithm (BSA)
-                    to generate a path that covers the accessible cells of the map. Once the path has been
-                    generated, the robot follows it using its linear and angular velocity controls.
+                    The drone implements a systematic S-shaped search algorithm to explore the designated search area and locate
+                    survivors as efficiently as possible. This approach consists of following a series of predefined waypoints arranged
+                    in parallel lines, alternating the direction of movement between
+                    consecutive lines to create a back-and-forth trajectory. This pattern allows the drone to cover the search area in an 
+                    organized manner, reducing the likelihood of leaving large areas unexplored.
                 </p>
             
                 <p>
-                    <strong>1. Map processing</strong><br><br>
-            
-                    The map is first loaded and converted into a grayscale image. Before processing the map,
-                    I manually extended the left wall to prevent the robot from trying to move outside the
-                    mapped area. I will explain this problem in more detail in the Problems section.
-                    The map is then eroded using the following lines of code:
-                </p>
-            
-                <pre><code>kernel = np.ones((5,5), np.uint8)</code></pre>
-                <pre><code>house_map = cv2.erode(house_map, kernel, iterations=1)</code></pre>
-            
-                <p>
-                    Erosion increases the size of the obstacles and therefore provides a safety margin
-                    between the robot and the walls.
+                    First, the algorithm generates a list of search points that define the drone's trajectory. In this implementation, 
+                    the waypoints are distributed along the X and Y axes, with the drone alternating between moving forward and backward 
+                    along each line. The initial position of the search is stored in the variables start_x and start_y, which serve as the
+                    reference point for calculating the absolute coordinates of each waypoint. This allows the search pattern to be adapted
+                    to the drone's current position when it reaches the designated search area.
                 </p>
             
                 <p>
-                    Next, the map is divided into a grid of 35 × 35 pixel cells, since this corresponds
-                    to the size of the vacuum cleaner according to the theoretical guidelines of the practice.
-                    For each cell, the percentage of obstacle pixels is calculated. If at least 1% of the
-                    cell contains obstacle pixels, the entire cell is considered occupied. This discretization
-                    simplifies the planning process because the BSA operates on grid cells instead of individual pixels.
+                    The drone then follows the generated trajectory by navigating towards each waypoint using the HAL.set_cmd_pos() function. 
+                    At every iteration, the algorithm calculates the distance between the drone's current position and its target position. When 
+                    this distance falls below a predefined tolerance (POSITION_TOLERANCE), the drone is considered to have reached the waypoint, 
+                    and the algorithm advances to the next point in the sequence. This process continues until all the waypoints have been visited 
+                    or the maximum number of survivors has been detected.
                 </p>
             
                 <p>
-                    <strong>2. Coordinate transformation</strong><br><br>
-            
-                    The program uses five corresponding points between Gazebo coordinates and pixel coordinates.
-                    These points are used to calculate a transformation matrix using a least-squares method.
-                    Two transformations are obtained:
+                    While following the search pattern, the drone continuously captures images using its ventral camera. These images are processed
+                    using OpenCV's Haar Cascade classifier to detect faces. To improve detection under different orientations, the system analyzes rotated 
+                    versions of the image. Additionally, a blue color filter is applied to reduce the influence of the surrounding ocean on face detection.
+                    When a face is detected, the system checks whether a survivor has already been registered nearby to avoid counting the same person multiple 
+                    times. If the detection is considered new, the survivor's estimated position is stored and the total number of detected survivors is updated.
                 </p>
             
                 <p>
-                    <strong>GZ_TO_PX_T:</strong> converts Gazebo coordinates into pixel coordinates.<br>
-                    <strong>PX_TO_GZ_T:</strong> converts pixel coordinates into Gazebo coordinates.
+                    Battery management is integrated into the search process to ensure that the drone can return safely to the rescue boat. Battery consumption is
+                    simulated continuously during flight, and the system interrupts the search when the battery level falls below the predefined threshold of 30%.
+                    The drone then returns to the rescue boat's location, lands, and recharges its battery. Once the battery is fully charged, it takes off again 
+                    and returns to the last recorded search position before continuing its mission. This mechanism allows the drone to resume its exploration without
+                    restarting the search pattern from the beginning.
                 </p>
             
                 <p>
-                    The <code>gz_to_cell()</code> function converts the robot's position in Gazebo into
-                    the corresponding grid cell, while <code>cell_to_gz()</code> performs the inverse operation,
-                    converting a grid cell into Gazebo coordinates.
+                    Finally, the mission ends when all predefined search points have been visited or when the target number of survivors has been detected. Overall, 
+                    this approach combines systematic area coverage, computer vision, duplicate detection, and battery management to provide an organized and autonomous 
+                    search strategy for maritime rescue operations.
                 </p>
             
-                <p>
-                    <strong>3. Cell evaluation and visualization</strong><br><br>
-            
-                    The <code>is_cell_free()</code> function determines whether a cell can be traversed.
-                    It checks whether the corresponding value in the grid represents a free cell or an obstacle.
-                </p>
-            
-                <p>
-                    The <code>color_cell()</code> function is used to visualize the different types of cells
-                    on the map. It receives the row, column, and corresponding color as parameters and
-                    changes the color of the selected cell.
-                </p>
-            
-                <p>
-                    <strong>4. Backtracking Spiral Algorithm</strong><br><br>
-            
-                    The planning algorithm is implemented in the <code>bsa()</code> function. The algorithm
-                    uses several data structures to keep track of the exploration:
-                </p>
-            
-                <p>
-                    <strong>visited:</strong> stores the cells that have already been explored.<br>
-                    <strong>path:</strong> stores the final sequence of cells that the robot should follow.<br>
-                    <strong>all_map_cells:</strong> acts as a stack during the exploration process.<br>
-                    <strong>return_points:</strong> stores alternative branches that can be explored later.
-                </p>
-            
-                <p>
-                    The robot explores the map using four possible directions:
-                </p>
-            
-                <pre><code>directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]</code></pre>
-            
-                <p>
-                    The algorithm first moves to an unvisited free neighboring cell. When several possible
-                    neighbors are available, the additional alternatives are stored as return points.
-                    When the robot reaches a cell with no available unvisited neighbors, the algorithm
-                    performs a backtracking process. It returns through previously explored cells until
-                    it reaches a stored return point, and then continues the exploration from there.
-                    This allows the algorithm to cover different branches of the environment while
-                    avoiding already visited cells.
-                </p>
-            
-                <p>
-                    <strong>5. Vacuum navigation</strong><br><br>
-            
-                    Once the path has been generated, the vacuum cleaner starts following it. For each
-                    target cell, its corresponding Gazebo coordinates are calculated. I use the Euclidean
-                    distance between the robot and the target to determine when the robot has reached the
-                    target cell.
-                </p>
-            
-                <p>
-                    When the robot is closer than 0.20 meters to the target, the cell is considered reached
-                    and the program moves to the next target. Otherwise, the program calculates the angle
-                    between the robot's current orientation and the target position. If the angular error
-                    is large, the robot rotates in place. Once the robot is sufficiently aligned with the
-                    target, it moves forward towards the target cell.
-                </p>
                    <img
-                    src="images/bsa.png"
+                    src="images/drone.png"
                     class="project-image"
                     alt="MYBSA">
                         
