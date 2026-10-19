@@ -569,11 +569,12 @@
 
 
             <p>
-                For the initial practical assignment of this course, we are required to implement a BSA (Backtracking Spiral Algorithm) 
-                for a vacuum-cleaning robot that uses self-localization. To accomplish this, we are provided with a pixel-based map representing 
-                the obstacles within a house, and the objective is to cover as much of the available area as possible in order to achieve an efficient 
-                and thorough cleaning of the entire surface. In addition, the corresponding theoretical background and guidelines for implementing the 
-                algorithm are provided.
+                The objective of this second practical assignment is to develop an autonomous drone capable of locating survivors
+                at sea following an aircraft accident. Using the last known coordinates of the aircraft, the drone must systematically
+                search the surrounding area, detect people using OpenCV's Haar Cascade classifier, avoid duplicate detections, and
+                estimate their coordinates to guide the rescue team. Additionally, the system must manage battery consumption by 
+                returning to the rescue boat to recharge when the battery reaches a predefined threshold, then resuming the search
+                from where it stopped.
             </p>
 
         </section>
@@ -590,9 +591,8 @@
 
 
             <p>
-                The system combines localization,
-                navigation, perception and motion control
-                to allow the robot to operate autonomously. To create the algorithm solution 
+                This system combines navigation, face detection, search algorithms, and battery 
+                management to perform autonomous search and rescue operations.To create the algorithm solution 
                 we needed the next theorical concepts:
             </p>
 
@@ -607,17 +607,20 @@
                     </span>
 
                     <h3>
-                        Conversion between different representations
+                        Conversion of coordinates
                     </h3>
 
                     <p>
-                        The conversion between different types of variables is essential in this practical assignment,
-                        as the algorithm is fundamentally based on it. It is necessary to understand the conversion between 3D and 2D,
-                        or, more specifically, the conversion of the robot’s real-world coordinates in Gazebo 
-                        into specific pixels on the provided map, and vice versa. In this process, we must take into account the
-                        transformations applied to these points and use a common transformation that accurately calibrates these conversions. 
-                        Additionally, it is necessary to establish a relationship or conversion between pixels and cells, since the map must 
-                        also be divided into a grid of cells.
+                        The drone API does not support GPS coordinates directly, so it is necessary to convert them into the Universal Transverse 
+                        Mercator (UTM) coordinate system, which expresses positions in meters. In this assignment, the geographical coordinates 
+                        (latitude and longitude) of both the rescue boat, where the drone recharges its battery, and the survivors to be rescued are 
+                        provided. These coordinates must be converted to UTM coordinates to calculate the distances and determine the positions the 
+                        drone needs to reach. It is also important to consider the different coordinate frames used by the system: UTM uses the 
+                        East (+X) and North (+Y) directions, while the drone's position control uses North (+X), West (+Y), and Height (+Z). In 
+                        addition, UTM coordinates are global, whereas the drone's position coordinates are relative to its initial position. Velocity 
+                        control uses a body-relative reference frame, where the axes represent Forward (+X), Left (+Y), and Up (+Z). Therefore, 
+                        understanding these coordinate systems and their differences is essential to ensure that the drone moves in the correct
+                        direction and reaches the intended locations.
                     </p>
 
                 </div>
@@ -631,40 +634,17 @@
                     </span>
 
                     <h3>
-                        Coverage and decomposition, and traveling between segments
+                        Face Detection
                     </h3>
 
                     <p>
-                        On the other hand, when developing the algorithm, we need to determine the different possible paths and decide
-                        which one to follow based on the specific requirements of the algorithm. In order to move the robot, the recommended 
-                        approach is to look two cells ahead, assuming that there are no obstacles between the robot and that position.
+                        Face detection is implemented using the Haar Cascade classifier provided by OpenCV. This method uses a pre-trained model
+                        to identify faces in images captured by the drone's camera. It allows the system to detect survivors at sea, 
+                        even when their positions and orientations vary. Additionally, the detector can identify multiple faces within a single image,
+                        helping the drone locate several survivors during its search.
                     </p>
 
                 </div>
-
-
-
-                <div class="info-card">
-
-                    <span>
-                        03
-                    </span>
-
-                    <h3>
-                        Visibility error
-                    </h3>
-
-                    <p>
-                        Due to the risk of the robot colliding with obstacles when moving too close to them, it is necessary to take
-                        additional safety measures during path planning. One of the most effective solutions is to apply an erosion process 
-                        to the map, increasing the size of the obstacles virtually. This creates a safety margin around the obstacles and prevents 
-                        the robot from planning paths that would bring it too close to them. In this way, the algorithm can generate safer and more
-                        reliable trajectories, reducing the possibility of collisions while still allowing the robot to cover as much of the available 
-                        area as possible.
-                    </p>
-
-                </div>
-
 
             </div>
 
