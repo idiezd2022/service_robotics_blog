@@ -740,45 +740,12 @@
 
             </p>
             <p>
-                - The first problem was the calibration of the transformation matrix and the coordinate transformations.
-                It took me a lot of time to understand what I was supposed to do based on the theory. Once I understood that I had to 
-                calculate the transformation matrix myself using manually measured points, I also found the implementation quite difficult. 
-                After implementing it and making further progress with the code, I noticed another problem: when I started the navigation, the map showed the robot
-                in different cells from where it was actually located. As a solution, I had to manually add two values to the rows and columns so that the measurements were 
-                correctly calibrated. These adjustments can be seen directly in the code.
-            </p>
-            <p>
-                - The second problem was the color-coding system. While developing the algorithm, I did not fully understand how the different colors had to 
-                be associated with each type of cell. After making several changes, I was able to clarify how the system worked, although there are still some cells that remain uncolored.
-            </p>
-                <img
-                    src="images/problem1.png"
-                    class="project-image"
-                    alt="Color coding problem">
-            
-            <p>
-
-                - The third problem was the left wall of the map and the shelf at the bottom. Once I had the algorithm working and the robot was navigating, 
-                when it reached these two areas, the robot tried to move towards a region outside the map, as shown in the image. Therefore, I had to manually extend the
-                walls slightly so that the robot could complete the path correctly. Although we were provided with a new map because the one from Unibotics was misaligned,
-                I preferred to use this one for convenience.
-            </p>
-                <img
-                    src="images/other_map.png"
-                    class="project-image"
-                    alt="Modified map">
-            
-            <p>
-
-
-                - Finally, there are two areas of the map, which can be seen in the video, where the robot gets slightly stuck. 
-                The first one is in a corner on the right side of the map. After a few minutes, the robot is able to get unstuck by itself. 
-                However, in the entrance to the room on the left, the robot is unable to get out by itself, so I have to move it manually a little. Before recording the 
-                video, however, the robot was also able to get unstuck from this area by itself.
+                - I encountered some difficulties with face detection because, after implementing the initial code, some faces were not being detected. 
+                Following the professor's advice, I modified the algorithm to rotate the image several times, allowing the system to detect faces 
+                in different orientations. However, this also led to duplicate detections of the same face. To solve this issue, I implemented a
+                method based on the drone's position to determine whether a survivor had already been detected nearby, preventing the same person from being counted multiple times.
             </p>
 
-
-            
 
         </section>
 
@@ -791,8 +758,6 @@
 
             <p>
                 Finally, this is the video of the program. It is worth noting that the video is in fast motion. 
-                Additionally, the two areas discussed in the “Problems” section have been cut a little out to reduce the length of the video, 
-                as the original video was approximately 30 minutes long.
 
             </p>
 
@@ -802,7 +767,7 @@
                     alt="planification">--->
 
              <a
-                href="https://urjc-my.sharepoint.com/:v:/r/personal/i_diezd_2022_alumnos_urjc_es/_layouts/15/stream.aspx?id=%2Fpersonal%2Fi_diezd_2022_alumnos_urjc_es%2FDocuments%2Fbsa_algrithm.mp4&share=cQr2zEs6ex_ZRIK0mtKa2OBTEgUCLeGkurlvsmCDIw1obqVFxg&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D"
+                href="https://urjc-my.sharepoint.com/:v:/r/personal/i_diezd_2022_alumnos_urjc_es/_layouts/15/stream.aspx?id=%2Fpersonal%2Fi_diezd_2022_alumnos_urjc_es%2FDocuments%2Fdrone_rescue.mp4&share=cQpwiiiXsj1nT4c5kXlSn00qEgUCjteLR0HKVqAYH1j8WBLsRg&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D"
                 class="video-link"
                 target="_blank">
                 ▶ Watch the algorithm video
