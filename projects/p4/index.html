@@ -7,7 +7,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>P4 — Coming Soon</title>
+    <title>P4 — Amazon Warehouse</title>
 
 
     <style>
@@ -303,7 +303,6 @@
                 color: #4b5563;
             }
 
-
         /* =========================
            PROJECT IMAGES
            ========================= */
@@ -321,6 +320,39 @@
 
             box-shadow:
                 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .small-image {
+            width: 70%;
+            display: block;
+            margin: 25px auto 0;
+        }
+
+        .video-link {
+            /*display: inline-block;
+            
+            margin-top: 10px;*/
+             display: block;
+            width: fit-content;
+            margin: 10px 0 0 auto;
+            
+            padding: 12px 20px;
+            
+            background: #2563eb;
+            
+            color: white;
+            
+            text-decoration: none;
+            
+            border-radius: 7px;
+            
+            transition: 0.2s;
+        }
+
+       
+        
+        .video-link:hover {
+            background: #1d4ed8;
         }
 
 
@@ -354,6 +386,27 @@
 
         .back a:hover {
             background: #1d4ed8;
+        }
+
+        .side-image {
+            position: fixed;
+            width: 200px;
+            height: auto;
+            z-index: 0;
+            opacity: 0.8;
+            border-radius: 20px;
+        }
+        
+        .side-left {
+            left: 40px;
+            top: 50%;
+            transform: translateY(-50%) scaleX(-1);
+        }
+        
+        .side-right {
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
 
@@ -428,6 +481,8 @@
     <!-- =========================
          NAVIGATION BAR
          ========================= -->
+    <img src="images/side_image.png" class="side-image side-left" alt="">
+    <img src="images/side_image.png" class="side-image side-right" alt="">
 
     <nav class="navbar">
 
@@ -442,7 +497,7 @@
                 Home
             </a>
 
-            <a href="../p1/">
+            <a href="../p1/" >
                 P1
             </a>
 
@@ -450,7 +505,7 @@
                 P2
             </a>
 
-            <a href="../p3/">
+            <a href="../p4/">
                 P3
             </a>
             <a href="./" class="active">
@@ -481,17 +536,301 @@
 
 
         <h1>
-            Coming Soon
+            Amazon Warehouse
         </h1>
 
 
         <p>
             Irene Diez de Toro
-            2026 - Robotic Software Engineering
+        </p>
+        
+        <p>
+            November 2026 - Robotic Software Engineering
         </p>
 
     </header>
 
+
+
+    <!-- =========================
+         MAIN CONTENT
+         ========================= -->
+
+    <main class="content">
+
+
+        <!-- INTRODUCTION -->
+
+        <section class="section">
+
+            <h2>
+                Introduction
+            </h2>
+
+
+            <p>
+                The objective of this exercise is to develop an autonomous logistics robot capable of transporting shelves from one location 
+                to another within a warehouse. The robot must use the warehouse map and its estimated current position to plan and execute the
+                movements required to complete the task, aiming to find the shortest possible path while avoiding obstacles.
+                The exercise is carried out in the Warehouse 1 environment and involves moving all six shelves to their designated locations. 
+                Two types of robots are available: a holonomic robot and an Ackermann robot, both equipped with a lifting platform to carry the 
+                shelves. To solve this task, the OMPL (Open Motion Planning Library) is used for path planning, together with a reactive
+                position-based control approach to guide the robot along the planned paths.
+             </p>
+            
+             <p>
+                The implementation is divided into two stages:
+            </p>
+            
+            <p>
+                Holonomic robot: First, a point-based planning approach is implemented using a square holonomic robot. Obstacles are 
+                inflated to account for the robot's dimensions and ensure collision-free navigation.
+            </p>
+            <p>
+                Ackermann robot: Finally, the solution is adapted to a rectangular Ackermann robot, taking into account its non-holonomic 
+                constraints and limited turning capabilities.
+            </p>
+
+        </section>
+
+
+
+        <!-- PROJECT OVERVIEW -->
+
+        <section class="section">
+
+            <h2>
+                01. Theorical Concepts
+            </h2>
+
+
+            <p>
+                This system combines a 360-degree LiDAR sensor with a GPS sensor, to pak. To create the algorithm solution 
+                we needed the next theorical concepts:
+            </p>
+            
+            <p>
+
+                3D LiDAR Attributes
+
+                A 3D LiDAR (Light Detection and Ranging) sensor is a device that measures distances to surrounding objects
+                by emitting laser beams and analysing the reflected signals. By collecting multiple measurements in different 
+                directions, it generates a three-dimensional representation of the environment, commonly known as a point cloud.
+                In this project, the LiDAR sensor provides information about the obstacles surrounding the vehicle. This information 
+                is essential for identifying parked cars, detecting available parking spaces, estimating the orientation of the 
+                street and ensuring a safe parking manoeuvre. The HAL.getLidarData() function returns an object containing several
+                attributes that describe the point cloud and the characteristics of the sensor.
+
+                
+            </p>
+
+
+            <div class="info-grid">
+
+
+                <div class="info-card">
+
+                    <span>
+                        01
+                    </span>
+
+                    <h3>
+                        Conversion between different representations
+                    </h3>
+
+                    <p>
+                        The conversion between different types of variables is essential in this practical assignment,
+                        as the algorithm is fundamentally based on it. It is necessary to understand the conversion between 3D and 2D,
+                        or, more specifically, the conversion of the robot’s real-world coordinates in Gazebo 
+                        into specific pixels on the provided map, and vice versa. In this process, we must take into account the
+                        transformations applied to these points and use a common transformation that accurately calibrates these conversions. 
+                        Additionally, it is necessary to establish a relationship or conversion between pixels and gazebo points.
+                    </p>
+
+                </div>
+
+                <div class="info-card">
+
+                    <span>
+                        02
+                    </span>
+
+                    <h3>
+                        Planning
+                    </h3>
+
+                    <p>
+                        This exercise focuses on motion planning, which consists of finding a collision-free path that allows a robot to move from an 
+                        initial position to a target location while avoiding obstacles and respecting its movement constraints. The main challenge is 
+                        not implementing a planning algorithm from scratch, but understanding and using the **Open Motion Planning Library (OMPL)**, a 
+                        C++ library that provides several sampling-based motion planning algorithms, such as RRT, PRM and KPIECE. OMPL is structured 
+                        around several key components. The **State Space** defines all the possible configurations of the robot, including its position 
+                        and, when necessary, its orientation. The **State Validity Checker** determines whether a configuration is valid by checking that 
+                        the robot does not collide with obstacles. The **Control Space** defines the possible movements of the robot, while the **State Propagator** 
+                        describes how the robot evolves when a control input is applied. These components are managed by the **Space Information** class, 
+                        which provides the information required by the planner. The **Planner** then searches for a feasible route between the initial and 
+                        goal configurations, producing a **Path** consisting of a sequence of states that the robot must follow. 
+                        There are different approaches to motion planning depending on the robot's geometry and movement constraints. In the simplest case, 
+                        the robot can be represented as a point in a two-dimensional Euclidean space. To prevent collisions, obstacles are enlarged according 
+                        to the robot's dimensions, ensuring sufficient clearance along the planned path. However, this approach becomes less suitable when 
+                        the robot has a rectangular geometry or carries a shelf, since its orientation and dimensions must also be considered. In these 
+                        cases, the configuration space must include the robot's orientation, using a state space such as **SE2StateSpace**. Furthermore, motion 
+                        validation is necessary to ensure that the transitions between consecutive states are feasible and collision-free. For robots with 
+                        non-holonomic constraints, such as Ackermann vehicles, OMPL provides state spaces such as **DubinsStateSpace** and **ReedsSheppStateSpace**, 
+                        which take into account the vehicle's turning radius and movement restrictions. Reeds-Shepp paths also allow backward motion, making them 
+                        particularly suitable for planning the movements of an Ackermann robot in this exercise.
+                    </p>
+
+                </div>
+
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- LOCALIZATION -->
+
+        <section class="section">
+
+            <h2>
+                03. My Algorithm: HOLONOMIC ROBOT
+            </h2>
+            
+                <p>
+                    Myprogram implements an autonomous logistics robot using the OMPL library and an RRTConnect algorithm to plan collision-free 
+                    paths between the initial shelf positions and their corresponding destination locations. First, the warehouse map is loaded 
+                    and processed into a grayscale image, and its free space is eroded to increase the safety clearance around obstacles. An affine
+                    transformation is calculated to convert coordinates between Gazebo and image pixels, allowing the robot's position and target 
+                    locations to be represented in the planning map. The path planner checks the validity of each state to avoid obstacles and generates
+                    a simplified path. Once a shelf has been collected, its original position is cleared from the planning map to prevent the robot from 
+                    treating it as an obstacle. The robot follows the planned path using position-based control, adjusting its linear and angular velocities 
+                    according to the distance and orientation error relative to the target. The implementation is organized into several states: PLANNING, 
+                    which generates the path; GO_TO, which controls navigation; TURN_AROUND, which rotates the robot 180 degrees; SHELF, which manages the 
+                    lifting and lowering platform; and RENEW, which updates the shelf index and prepares the next task. This process is repeated until all 
+                    six shelves have been transported to their designated destinations.
+                </p>
+            
+                <img
+                    src="images/holonomic.png"
+                    class="project-image"
+                    alt="MYHOLONOMIC">
+            
+            <h2>
+                03. My Algorithm: ACKERMAN ROBOT
+            </h2>
+            
+                <p>
+                    My The program implements an autonomous logistics robot with Ackermann steering, using the OMPL library and the RRTConnect
+                    algorithm to generate collision-free paths between the initial shelf positions and their corresponding destinations. The warehouse 
+                    map is loaded and processed into a grayscale image, and its free space is eroded to provide additional clearance around obstacles.
+                    An affine transformation is used to convert coordinates between Gazebo and image pixels, including the robot's orientation. 
+                    Unlike the holonomic version, the planner uses a **Reeds-Shepp state space**, which considers both position and orientation while 
+                    respecting the robot's minimum turning radius, calculated from its wheelbase and maximum steering angle. Once a shelf has been 
+                    collected, its original position is cleared from the planning map. The robot follows the planned trajectory using a position-based 
+                    controller that adjusts its linear and angular velocities according to the distance and orientation error. During the outbound journey, 
+                    the robot moves forward, whereas on the return journey, when carrying a shelf, it follows the path backwards. The implementation is 
+                    organized into four main states: **PLANNING**, which generates a feasible path; **GO_TO**, which controls the robot's movement 
+                    along the trajectory; **SHELF**, which manages the lifting and lowering platform; and **RENEW**, which updates the shelf index 
+                    and prepares the next task. This process is repeated until all six shelves have been transported to their designated destinations.
+                </p>
+            
+                   <img
+                    src="images/ackerman.png"
+                    class="project-image"
+                    alt="MYACKERMAN">
+
+        </section>
+
+        <!-- NAVIGATION -->
+
+        <section class="section">
+
+            <h2>
+                04. Dificulties or Problems Encountered During Development
+            </h2>
+
+
+            <p>
+                In this section, I will explain the problems I encountered during the development of this practice, as well as some issues that I was not able to completely solve.
+
+            </p>
+            <p>
+                - First, understanding and implementing the OMPL library was challenging and required a considerable amount of time, as I 
+                initially had difficulties understanding how to use its planning algorithms and integrate them into the program.
+
+            </p>
+
+            <p>
+                - The second challenge was the Ackermann robot itself. Since it has different movement constraints compared to a holonomic 
+                robot, I had to adapt the path planning algorithm and reimplement the robot's turning and navigation methods. Finding a suitable 
+                solution that respected its movement limitations proved to be particularly challenging.
+            </p>
+            <p>
+                - Finally, the last two shelves caused additional difficulties when working with the Ackermann robot. The coordinates provided 
+                in the exercise instructions made the planner interpret their positions as being too close to the warehouse shelf supports. As a result, 
+                the planned paths went through these supports, causing the robot to collide with them. This required additional adjustments to the shelf 
+                coordinates to achieve successful navigation.
+            </p>
+
+
+        </section>
+
+        <section class="section">
+
+            <h2>
+                05. Video of the algorithm
+            </h2>
+
+
+            <p>
+                There are two videos attached. 
+                The first one, shows the holonomic robot. The second one, shows the ackerman robot. In both cases, I removed the shelves to make 
+                the robot's task easier, as explained in the practice report.
+
+            </p>
+
+             <!-- <img
+                    src="images/planification.png"
+                    class="project-image small-image"
+                    alt="planification">--->
+
+             <a
+                href="https://urjc-my.sharepoint.com/:v:/r/personal/i_diezd_2022_alumnos_urjc_es/_layouts/15/stream.aspx?id=%2Fpersonal%2Fi%5Fdiezd%5F2022%5Falumnos%5Furjc%5Fes%2FDocuments%2Famazonwarehouse%2Ewebm&share=cQrHrSeWvbmmTIzTUCQi%5FYy7EgUC146Na5jIN2RS2hl6MNeXxw"
+                class="video-link"
+                target="_blank">
+                ▶ Watch the holonomic video
+                
+            </a>
+
+            <a
+                href="https://urjc-my.sharepoint.com/:v:/r/personal/i_diezd_2022_alumnos_urjc_es/_layouts/15/stream.aspx?id=%2Fpersonal%2Fi%5Fdiezd%5F2022%5Falumnos%5Furjc%5Fes%2FDocuments%2Famazonwarehouseackerman%2Ewebm&share=cQq4v9eDN1QmQYRMGCdAEVHiEgUCbQArmqnCuAjmqI3Jexe3RQ"
+                class="video-link"
+                target="_blank">
+                ▶ Watch the ackerman video
+                
+            </a>
+
+
+        </section>
+
+
+
+
+        <!-- BACK BUTTON -->
+
+        <div class="back">
+
+            <a href="../../">
+                ← Back to Service Robotics Blog
+            </a>
+
+        </div>
+
+
+    </main>
 
 
 
@@ -504,6 +843,14 @@
         <p>
             Service Robotics Blog · P4
         </p>
+
+        <!--<div class="back">
+
+            <a href="../../">
+                ← Back to Service Robotics Blog
+            </a>
+
+        </div>--->
 
     </footer>
 
